@@ -1,0 +1,85 @@
+{% include 'header.html' %}
+
+{% load static %}
+
+<div class="container mt-5">
+
+
+
+
+    <div class="jumbotron text-center" style="background-color: #000000; border-radius: 10px; color: #ffffff;">
+      <div class="row">
+        <div class="col-md-5 mx-auto">
+          <h1 class="display-4 mt-5">Welcome to our Donation App!</h1>
+          <p class="lead">Make a difference by supporting various causes.</p>
+          <hr class="my-4">
+          <p>Join us in making the world a better place through your generous donations.</p>
+          <a class="btn btn-primary btn-lg" href="#" role="button" style="margin-bottom: 30px;">Donate Now</a>
+        </div>
+        <div class="col-md-6">
+          <img src="{% static 'poverty.jpg' %}" alt="Phone" class="img-fluid" style="height: 450px; filter: grayscale(50%);">
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    <div class="row mt-5">
+      <div class="col-md-12 text-center">
+        <h2>Our Causes</h2>
+        <p>Choose a cause you care about and make a difference today.</p>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="row mt-3">
+      
+      {% for ngo in ngos %}
+      
+
+        <div class="col-md-4">
+          <a href="{% url 'viewngo' uuid=ngo.uuid %}" style="text-decoration: none; outline: none; color: inherit;"> 
+            <img src="{{ngo.ngo_image.url}}" alt="People" class="img-fluid rounded-circle mx-auto d-block fixed-circle">
+            <h4 class="text-center mt-3" style="text-transform: uppercase;" >{{ngo.ngo_name}}</h4>
+            <p class="text-center card-text mb-4">{{ngo.ngo_description}}</p>
+          </a>
+        </div>
+      
+      {% endfor %}
+
+    </div> 
+
+
+
+
+    <div class="row mt-5">
+
+      {% for campaign in campaigns %}
+      
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 mb-3" style="border-radius: 10px;">
+          <img src="{{campaign.campaign_image.url}}" alt="People" class="card-img-top fixed-image" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
+          <div class="card-body">
+            <h5 class="card-title">{{campaign.campaign_name}}</h5>
+            <p class="card-text">{{campaign.campaign_description}}</p>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+
+    </div>
+
+
+
+</div>
+
+
+
+  {% include 'footer.html' %}

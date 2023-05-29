@@ -1,0 +1,153 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Hani">
+    <meta name="description" content="CharityGo - 2023">
+
+    <title>CharityGo</title>
+
+    <style>
+      .card {
+        height: 100%;
+      }
+  
+      .card-text {
+        font-size: 16px;
+      }
+
+      .ngo-image {
+        height: 280px;
+        object-fit: cover;
+        object-position: center;
+      }
+      .details-container {
+        display: flex;
+        align-items: center;
+      }
+      .details {
+        margin-left: 20px;
+        font-size: 18px;
+      }
+
+      .background-image {
+        position: relative;
+        height: calc(100vh - 56px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      .background-image::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("{% static 'campaign-header.jpg' %}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.8;
+        z-index: -1;
+      }
+      @media screen and (max-width: 600px) {
+        .background-image {
+          height : auto;
+        }
+        .background-image .container h1 {
+          font-size: 13vw;
+        }     
+      }
+      .welcome-text {
+        color: #ffffff;
+        font-size: 80px;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      .fixed-circle {
+        width: 200px; 
+        height: 200px; 
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      .fixed-image {
+        width: 100%; 
+        height: 400px;
+        object-fit: cover;
+      }
+
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css" />
+    <link rel="icon" href="favicon.png"/>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+</head>
+
+
+<body class="flex-column min-vh-100">
+
+    <div class="">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'home' %}">CharityGo</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Navigation Bar -->
+                <div class="navbar-collapse collapse"id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item"><a class="nav-link {% if navbar == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link {% if navbar == 'ngos' %}active{% endif %}" href="{% url 'viewngos' %}">NGOs</a></li>
+                        <li class="nav-item"><a class="nav-link {% if navbar == 'joinus' %}active{% endif %}" href="{% url 'viewjoinus' %}">Join Us</a></li>
+                        <li class="nav-item"><a class="nav-link {% if navbar == 'aboutus' %}active{% endif %}" href="{% url 'viewaboutus' %}">About Us</a></li>
+                    </ul>
+                   
+                    <ul class="navbar-nav ml-auto">
+                      <li class="nav-item"><a class="nav-link {% if navbar == 'login' %}active{% endif %}" href="{% url 'login' %}"> Login <span>&#9094;</span> </a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <a class="navbar-brand" href="#">Hidden brand</a>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link disabled">Disabled</a>
+                  </li>
+                </ul>
+                <form class="d-flex" role="search">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+              </div>
+            </div>
+          </nav>
+          
+    </div>

@@ -1,0 +1,69 @@
+{% include 'header.html' %}
+
+{% load static %}
+
+
+<div class="container mt-5">
+
+
+    <div class="row mt-5">
+        <div class="col-md-12 text-center">
+        <h2>NGO Directory</h2>
+        <p>Empowering Change, Uniting NGOs for a Better World</p>
+        </div>
+    </div>
+
+
+
+
+    <div class="row" style="margin-top: 65px;">
+        
+        {% for ngo in ngos %}
+        
+
+        <div class="col-md-4">
+            <a href="{% url 'viewngo' uuid=ngo.uuid %}" style="text-decoration: none; outline: none; color: inherit;"> 
+                <img src="{{ngo.ngo_image.url}}" alt="People" class="img-fluid rounded-circle mx-auto d-block fixed-circle">            
+                <h4 class="text-center mt-3" style="text-transform: uppercase;" >{{ngo.ngo_name}}</h4>        
+                <p class="text-center card-text mb-4">{{ngo.ngo_description}}</p>     
+            </a>   
+        </div>
+
+        
+        {% endfor %}
+
+    </div> 
+
+
+
+
+
+    <div class="jumbotron text-center" style="background-color: #000000; border-radius: 10px; color: #ffffff; margin-top: 70px;">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{% static 'flood-img-1.png' %}" alt="Phone" class="img-fluid" style="height: 450px; filter: grayscale(100%);">
+          </div>
+          <div class="col-md-5 mx-auto mt-4">
+            <h1 class="display-4 mt-5">Empowering Welfare</h1>
+            <p class="lead">Explore and support NGOs driving positive change.</p>
+            <hr class="my-4">
+            <p style="margin-bottom: 60px;">Join us in making the world a better place through your generous donations.</p>    
+          </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    
+
+</div>
+
+
+
+
+
+
+{% include 'footer.html' %}
