@@ -1,0 +1,121 @@
+{% include 'header.html' %}
+
+
+{% if error %}
+<div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+  {{ error }}
+</div>
+{% endif %}
+
+
+<div class="container col-md-10">
+
+    <h1 class="text-center mt-4">NGO Registration</h1>
+
+    <form method="POST" enctype="multipart/form-data" action="{% url 'viewjoinus' %}">
+      {% csrf_token %}
+
+
+
+
+
+      <fieldset style="margin-top: 50px;">
+        <legend class="text-center">Authentication</legend>
+
+
+        <div class="form-group mt-4">
+            <label>Email</label>
+            <input type="email" class="form-control" name="email" required>
+        </div>
+
+        <div class="row mt-2">
+
+            <div class="form-group col-md-6">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" required minlength="8">
+            </div>
+
+            <div class="form-group col-md-6">
+            <label>Re-Password</label>
+            <input type="password" class="form-control" name="re-password" required minlength="8">
+            </div>
+
+        </div>
+
+      </fieldset>
+
+
+
+
+
+      <fieldset style="margin-top: 50px;">
+        <legend class="text-center">Details</legend>
+
+        <div class="form-group mt-4">
+            <label>NGO Name</label>
+            <input type="text" class="form-control" name="ngo_name" maxlength="50" required>
+        </div>
+    
+          
+        <div class="form-group mt-2">
+            <label>NGO Address</label>
+            <input type="text" class="form-control" name="ngo_address" maxlength="255" required>
+        </div>
+    
+        <div class="form-group mt-2">
+            <label>NGO Description</label>
+            <textarea name="ngo_description" cols="30" rows="1" class="form-control" maxlength="255" required></textarea>
+        </div>
+    
+        <div class="form-group mt-2">
+            <label>NGO Contact</label>
+            <input type="text" class="form-control" name="ngo_phone" maxlength="11" required>
+        </div>
+
+
+        <div class="form-group mt-2">
+            <label>NGO Image</label>
+            <input type="file" class="form-control" name="ngo_image" required>
+        </div>
+
+
+      </fieldset>
+
+
+
+
+
+      <fieldset style="margin-top: 50px;">
+        <legend class="text-center">Payment Information</legend>
+
+        <div class="form-group mt-2">
+            <label>Bank Name</label>
+            <input type="text" class="form-control" name="ngo_bank_name" maxlength="255" required>
+        </div>
+  
+        <div class="form-group mt-2">
+            <label>Account Title</label>
+            <input type="text" class="form-control" name="ngo_account_title" maxlength="255" required>
+        </div>
+  
+        <div class="form-group mt-2">
+            <label>Account Number</label>
+            <input type="text" class="form-control" name="ngo_account_no" maxlength="255" required> 
+        </div>      
+
+        <button type="submit" class="btn btn-primary mt-4">Signup</button>
+
+      </fieldset
+
+
+
+
+    </form>
+</div>
+  
+
+
+
+
+
+{% include 'footer.html' %}
