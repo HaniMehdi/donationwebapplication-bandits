@@ -50,6 +50,23 @@ def view_ngos(request):
      return HttpResponse(template.render(context, request))
 
 
+def view_filter_ngos(request):
+     if request.method == 'GET':
+          query = request.GET.get('query')
+          if query != '':
+               ngos = NGO.objects.filter(Q(ngo_name__icontains=query) | Q(ngo_name__icontains=query.replace(' ', ''))) if query else NGO.objects.none()
+          else:
+               ngos = NGO.objects.all().order_by('ngo_name')
+          for ngo in ngos:
+                    if len(ngo.ngo_description) > 150:
+                         ngo.ngo_description = ngo.ngo_description[0:151] + ' ...'
+          template = loader.get_template('ngos.html')
+          context = {
+               'navbar' : 'ngos',
+               'ngos' : ngos,
+          }
+          return HttpResponse(template.render(context, request))
+
 def view_aboutus(request):
      template = loader.get_template('aboutus.html')
      context = {
