@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.template import loader
 from django.urls import reverse
 from django.db.models import Q
-from CharityGo.models import NGO, Campaign
+from CharityGo.models import NGO, Campaign, Donor
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import auth
@@ -81,13 +81,20 @@ def view_joinus(request):
      if request.method == 'POST' and _ngoemail:
           _password = request.POST.get('password')
           _repassword = request.POST.get('re-password')
+          _ngoname = request.POST.get('ngo_name')
+          user = User.objects.filter(username=_ngoname.replace(' ', '-')).first()
+          if user is not None:
+               context = {
+                    'navbar' : 'joinus',
+                    'error' : 'NGO Already Exists'
+               }
+               return HttpResponse(template.render(context, request)) 
           if _password != _repassword:          
                context = {
                     'navbar' : 'joinus',
                     'error' : 'Both Passwords Do Not Match'
                }
-               return HttpResponse(template.render(context, request))          
-          _ngoname = request.POST.get('ngo_name')
+               return HttpResponse(template.render(context, request))                    
           _ngoaddress = request.POST.get('ngo_address')
           _ngodescription = request.POST.get('ngo_description')
           _ngophone = request.POST.get('ngo_phone')
@@ -114,15 +121,62 @@ def view_joinus(request):
             ).save()
           return redirect('login')
      context = {
-          'navbar' : 'joinus',
+          'navbar' : 'registerngo',
      }
+     return HttpResponse(template.render(context, request))
+
+
+def view_register_donor(request):
+     template = loader.get_template('donor_registration.html')
+     if request.method == 'POST':
+          _username = request.POST.get('username')
+          _email = request.POST.get('email')
+          _password = request.POST.get('password')
+          _repassword = request.POST.get('re-password')
+          _donorname = request.POST.get('donor_name')
+          _donorcnic = request.POST.get('donor_cnic')
+          print(_username)
+          user = User.objects.filter(username=_username).first()
+          if user is not None:
+               context = {
+               'navbar' : 'becomedonor',
+               'error' : 'Username Already Taken, Try A New one'
+               }
+               return HttpResponse(template.render(context, request))
+          if _password != _repassword:
+               context = {
+               'navbar' : 'becomedonor',
+               'error' : 'Both Passwords Do Not Match'
+               }
+               return HttpResponse(template.render(context, request))
+          if len(str(_donorcnic)) != 13:
+               context = {
+               'navbar' : 'becomedonor',
+               'error' : 'Invalid CNIC'
+               }
+               return HttpResponse(template.render(context, request))
+          user = User.objects.create_superuser(
+               username=_username, 
+               password=_password, 
+               email=_email
+            )
+          Donor.objects.create(user=user, donor_name=_donorname, donor_cnic=_donorcnic, created_by=user).save()
+          return redirect('login')
+     else:
+          context = {
+               'navbar' : 'becomedonor',
+          }
      return HttpResponse(template.render(context, request))
 
 
 def view_login(request, message=None):
     if request.user.is_authenticated:
                     ngo = NGO.objects.filter(user = request.user).first()
-                    return redirect('ngodashboard', uuid=ngo.uuid)
+                    if ngo is not None:
+                         return redirect('ngodashboard', uuid=ngo.uuid)
+                    donor = Donor.objects.filter(user = request.user).first()
+                    if donor is not None:
+                         return redirect('donordashboard', uuid=donor.uuid)
     template = loader.get_template('login.html')
     context = {
         'navbar': 'login',
@@ -215,6 +269,14 @@ def view_save_added_campaign(request, ngouuid):
           Campaign.objects.create(campaign_name = _campaignname, campaign_description = _campaigndescription, campaign_image = _campaignimage,
                                   NGO = ngo, created_by = ngo.user).save()
           return redirect('login')
+     
+
+def view_donor_dashboard(request, uuid):
+     template = loader.get_template('donor_dashboard.html')
+     context = {
+
+     }
+     return HttpResponse(template.render(context, request))
 
 
 

@@ -1,0 +1,80 @@
+{% include 'header.html' %}
+
+
+{% if error %}
+<div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+  {{ error }}
+</div>
+{% endif %}
+
+
+<div class="container col-md-10">
+
+    <h1 class="text-center mt-4">Become A Donor</h1>
+
+    <form method="POST" action="{% url 'registerdonor' %}">
+      {% csrf_token %}
+
+
+
+      <fieldset style="margin-top: 50px;">
+        <legend class="text-center">Authentication</legend>
+
+        <div class="form-group mt-6">
+            <label>Username</label>
+            <input type="text" class="form-control" name="username" maxlength="50" required>
+        </div>
+
+        <div class="form-group mt-2">
+            <label>Email</label>
+            <input type="email" class="form-control" name="email" required>
+        </div>
+
+        <div class="row mt-2">
+
+            <div class="form-group col-md-6">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" required minlength="8">
+            </div>
+
+            <div class="form-group col-md-6">
+            <label>Re-Password</label>
+            <input type="password" class="form-control" name="re-password" required minlength="8">
+            </div>
+
+        </div>
+
+      </fieldset>
+
+
+
+
+      <fieldset style="margin-top: 50px;">
+        <legend class="text-center">Details</legend>
+
+        <div class="form-group mt-4">
+            <label>Name</label>
+            <input type="text" class="form-control" name="donor_name" maxlength="50" required>
+        </div>
+    
+          
+        <div class="form-group mt-2">
+            <label>CNIC No</label>
+            <input type="number" class="form-control" name="donor_cnic" minlength="13" maxlength="13" required placeholder="(Without - and spaces)">
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Signup</button>
+
+      </fieldset>
+
+
+
+    </form>
+</div>
+  
+
+
+
+
+
+{% include 'footer.html' %}
