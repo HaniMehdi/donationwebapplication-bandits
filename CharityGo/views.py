@@ -102,15 +102,35 @@ def view_joinus(request):
 
 
 def view_login(request, message=None):
-    return HttpResponse('Login')
+    if request.user.is_authenticated:
+                    ngo = NGO.objects.filter(user = request.user).first()
+                    return redirect('ngodashboard', uuid=ngo.uuid)
+    template = loader.get_template('login.html')
+    context = {
+        'navbar': 'login',
+        'error' : message
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def validate_user(request):
-    return HttpResponse('Validate')
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = User.objects.filter(email=email).first()
+        if user is not None:
+            if user.check_password(password):
+                login(request, user)
+                return redirect('login')
+        request.error = 'Invalid Email or Password'
+        return view_login(request, 'Invalid Email or Password')
+    return redirect('login')
     
     
 def view_ngo_dashboard(request, uuid):
-    return HttpResponse('Dashboard')
+    template = loader.get_template('ngo_dashboard.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
     
             
         
