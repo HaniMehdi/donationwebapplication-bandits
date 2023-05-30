@@ -1,4 +1,37 @@
+{% include 'ngo_login_header.html' %}
 
-<p> Success </p>
+
+
+
+<h2 style="font-weight: bold;" class="text-center mt-4">CAMPAIGNS</h2>
+<div class="text-center">
+    <a style="font-weight: bold;" class="text-center mt-3 btn btn-dark mb-4" href="{% url 'addcampaign' ngouuid=ngo.uuid %}">Add Campaigns</a>
+</div>
+
+
+<div class="container">
+    <div class="row">
+    
+    {% for campaign in campaigns %}
+
+      <div class="col-md-3 mt-4">
+        <div class="card h-100">
+            <img class="card-img-top fixed-image" src="{{campaign.campaign_image.url}}" alt="{{campaign.campaign_name}} Img">
+            <div class="card-body">
+                <h5 class="card-title">{{campaign.campaign_name}}</h5>                
+                <div class="flex">
+                    <a href="{% url 'editcampaign' ngouuid=ngo.uuid campaignuuid=campaign.uuid %}" class="btn btn-primary mt-2">Edit</a>
+                    <a href="{% url 'deletecampaign' ngouuid=ngo.uuid campaignuuid=campaign.uuid %}" class="btn btn-danger mt-2">Delete</a>
+                </div>
+            </div>
+        </div>
+      </div>
+
+    {% endfor %}
+    </div>
+</div>
+
+
+
 
 {% include 'footer.html' %}

@@ -13,84 +13,20 @@
     <title>CharityGo</title>
 
     <style>
-      .card {
-        height: 100%;
-      }
-  
-      .card-text {
-        font-size: 16px;
-      }
 
-      .ngo-image {
-        height: 280px;
-        object-fit: cover;
-        object-position: center;
-      }
-      .details-container {
-        display: flex;
-        align-items: center;
-      }
-      .details {
-        margin-left: 20px;
-        font-size: 18px;
-      }
-
-      .background-image {
-        position: relative;
-        height: calc(100vh - 56px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: rgba(0, 0, 0, 0.8);
-      }
-      .background-image::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("{% static 'campaign-header.jpg' %}");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        opacity: 0.8;
-        z-index: -1;
-      }
-      @media screen and (max-width: 600px) {
-        .background-image {
-          height : auto;
-        }
-        .background-image .container h1 {
-          font-size: 13vw;
-        }     
-      }
-      .welcome-text {
-        color: #ffffff;
-        font-size: 80px;
-        text-align: center;
-        text-transform: uppercase;
-        font-weight: bold;
-      }
-      .fixed-circle {
-        width: 200px; 
-        height: 200px; 
-        object-fit: cover;
-        border-radius: 50%;
-      }
       .fixed-image {
-        width: 100%; 
-        height: 400px;
-        object-fit: cover;
-      }
-      .card-image-fixed
-      {
         width: 100%; 
         height: 200px;
         object-fit: cover;
       }
+      .custom-card
+      {
+        height: auto;
+      }
+
 
     </style>
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css" />
@@ -108,21 +44,21 @@
     <div class="">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'home' %}">CharityGo</a>
+                <a class="navbar-brand" href="{% url 'login' %}">Welcome, {{ngo.ngo_name}}</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <!-- Navigation Bar -->
                 <div class="navbar-collapse collapse"id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                        <li class="nav-item"><a class="nav-link {% if navbar == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a></li>
+                        {% comment %} <li class="nav-item"><a class="nav-link {% if navbar == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a></li>
                         <li class="nav-item"><a class="nav-link {% if navbar == 'ngos' %}active{% endif %}" href="{% url 'viewngos' %}">NGOs</a></li>
                         <li class="nav-item"><a class="nav-link {% if navbar == 'joinus' %}active{% endif %}" href="{% url 'viewjoinus' %}">Join Us</a></li>
-                        <li class="nav-item"><a class="nav-link {% if navbar == 'aboutus' %}active{% endif %}" href="{% url 'viewaboutus' %}">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link {% if navbar == 'aboutus' %}active{% endif %}" href="{% url 'viewaboutus' %}">About Us</a></li> {% endcomment %}
                     </ul>
                    
                     <ul class="navbar-nav ml-auto">
-                      <li class="nav-item"><a class="nav-link {% if navbar == 'login' %}active{% endif %}" href="{% url 'login' %}"> Login <span>&#9094;</span> </a></li>
+                      <li class="nav-item"><a class="nav-link {% if navbar == 'login' %}active{% endif %}" href="{% url 'ngologout' uuid=ngo.uuid %}"> Logout <span>&#9094;</span> </a></li>
                     </ul>
 
                 </div>

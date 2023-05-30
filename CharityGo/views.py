@@ -6,6 +6,7 @@ from django.db.models import Q
 from CharityGo.models import NGO, Campaign
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.contrib import auth
 
 # Create your views here.
 
@@ -129,8 +130,77 @@ def validate_user(request):
     
 def view_ngo_dashboard(request, uuid):
     template = loader.get_template('ngo_dashboard.html')
-    context = {}
+    ngo = NGO.objects.filter(uuid=uuid).first()
+    campaigns = Campaign.objects.filter(NGO=ngo, voided=False).order_by('campaign_name')
+    context = {
+         'ngo' : ngo,
+         'campaigns' : campaigns,
+    }
     return HttpResponse(template.render(context, request))
+
+
+def view_ngo_logout(request, uuid):
+     auth.logout(request)
+     return redirect('home')
+
+
+def view_edit_campaign(request, ngouuid, campaignuuid):
+     template = loader.get_template('edit_campaign.html')
+     ngo = NGO.objects.filter(uuid=ngouuid).first()
+     campaign = Campaign.objects.filter(uuid=campaignuuid).first()
+     context = {
+          'ngo' : ngo,
+          'campaign' : campaign,
+     }
+     return HttpResponse(template.render(context, request))
+
+
+def view_save_edited_campaign(request, ngouuid, campaignuuid):
+     if request.method == 'POST':
+          _campaignname = request.POST.get('campaign_name')
+          _campaigndescription = request.POST.get('campaign_description')
+          _campaignimage = request.FILES.get('campaign_image') 
+          print(_campaignimage)                   
+          ngo = NGO.objects.filter(uuid=ngouuid).first()
+          campaign = Campaign.objects.filter(uuid=campaignuuid).first()
+          campaign.campaign_name = _campaignname
+          campaign.campaign_description = _campaigndescription
+          campaign.updated_by = ngo.user
+          if _campaignimage is not None:               
+               campaign.campaign_image = _campaignimage               
+          campaign.update();
+          return redirect('login')
+
+
+def view_delete_campaign(request, ngouuid, campaignuuid):
+     ngo = NGO.objects.filter(uuid=ngouuid).first()
+     campaign = Campaign.objects.filter(uuid=campaignuuid).first()
+     campaign.voided_by = ngo.user
+     campaign.delete()
+     return redirect('login')
+
+
+def view_add_campaign(request, ngouuid):
+     template = loader.get_template('add_campaign.html')
+     ngo = NGO.objects.filter(uuid=ngouuid).first()
+     context ={
+          'ngo' : ngo
+     }
+     return HttpResponse(template.render(context, request))
+
+
+def view_save_added_campaign(request, ngouuid):
+     if request.method == "POST":
+          _campaignname = request.POST.get('campaign_name')
+          _campaigndescription = request.POST.get('campaign_description')
+          _campaignimage = request.FILES.get('campaign_image')
+          ngo = NGO.objects.filter(uuid=ngouuid).first()
+          Campaign.objects.create(campaign_name = _campaignname, campaign_description = _campaigndescription, campaign_image = _campaignimage,
+                                  NGO = ngo, created_by = ngo.user).save()
+          return redirect('login')
+
+
+
     
             
         
