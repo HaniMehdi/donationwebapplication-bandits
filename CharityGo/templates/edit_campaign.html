@@ -1,0 +1,50 @@
+{% include 'ngo_login_header.html' %}
+
+
+{% if error %}
+<div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+  {{ error }}
+</div>
+{% endif %}
+
+
+<div class="container col-md-10">
+
+    <h1 class="text-center mt-4">Edit Campaign</h1>
+
+    <form method="POST" enctype="multipart/form-data" action="{% url 'saveeditedcampaign' ngouuid=ngo.uuid campaignuuid=campaign.uuid %}">
+      {% csrf_token %}
+
+
+      <fieldset style="margin-top: 40px;">
+        <legend class="text-center">Details</legend>
+
+        <div class="form-group mt-4">
+            <label>Campaign Name</label>
+            <input type="text" class="form-control" name="campaign_name" maxlength="50" required value="{{campaign.campaign_name}}">
+        </div>
+    
+        <div class="form-group mt-2">
+            <label>NGO Description</label>
+            <textarea name="campaign_description" cols="30" rows="1" class="form-control" maxlength="255" required>{{campaign.campaign_description}}</textarea>
+        </div>
+
+        <div class="form-group mt-2">
+            <label>NGO Image</label>
+            <span>{{ campaign.campaign_image.url }}</span>
+            <input type="file" class="form-control" name="campaign_image">
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Update</button>
+
+      </fieldset>
+
+
+    </form>
+</div>
+  
+
+
+
+
+{% include 'footer.html' %}
