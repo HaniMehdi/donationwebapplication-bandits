@@ -8,6 +8,7 @@ urlpatterns = [
     path('CharityGo/ngos/search/', views.view_filter_ngos, name='viewfilteredngos'),
     path('CharityGo/aboutus', views.view_aboutus, name='viewaboutus'),
     path('CharityGo/joinus/', views.view_joinus, name='viewjoinus'),
+    path('CharityGo/donor/register/', views.view_register_donor, name='registerdonor'),
     path('CharityGo/login', views.view_login, name="login"),
     path('CharityGo/login/validate/', views.validate_user, name="validateuser"),
     path('CharityGo/ngo/dashboard/<str:uuid>', views.view_ngo_dashboard, name='ngodashboard'),
@@ -17,4 +18,5 @@ urlpatterns = [
     path('CharityGo/ngo/<str:ngouuid>/campaign/delete/<str:campaignuuid>', views.view_delete_campaign, name='deletecampaign'),
     path('CharityGo/ngo/<str:ngouuid>/campaign/add', views.view_add_campaign, name='addcampaign'),
     path('CharityGo/ngo/<str:ngouuid>/campaign/add/save/', views.view_save_added_campaign, name='saveaddedcampaign'),
+    path('CharityGo/donor/dashboard/<str:uuid>', views.view_donor_dashboard, name='donordashboard')
 ]
