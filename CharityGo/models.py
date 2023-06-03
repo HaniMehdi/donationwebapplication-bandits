@@ -6,12 +6,19 @@ from uuid import uuid4
 # Create your models here.
 class NGO(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # E.g. 'Edhi Foundation'
     ngo_name = models.CharField(max_length=50, null=False, blank=False)
+    # E.g. 'Shahra-e-Faisal, karachi'
     ngo_address = models.CharField(max_length=255, null=False, blank=False)
+    # E.g. 'Biggest Ambulance Chaneel In The World'
     ngo_description = models.CharField(max_length=255, null=False, blank=False)
+    # E.g. '03285089854'
     ngo_phone = models.CharField(max_length=11, null=False, blank=False)
+    # E.g. 'HBL'
     ngo_bank_name = models.CharField(max_length=255, null=False, blank=False)
+    # E.g. 'Edhi Foundation'
     ngo_account_title = models.CharField(max_length=255, null=False, blank=False)
+    # E.g. 'PK10094999040040'
     ngo_account_no = models.CharField(max_length=255, null=False, blank=False)
     ngo_image = models.ImageField(upload_to="images/", null=False, blank=False)
     # Audit fields
@@ -26,12 +33,15 @@ class NGO(models.Model):
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
     def save(self, created_by=None, *args, **kwargs):
+        #Check if user already has an NGO
         ngo = NGO.objects.filter(user=self.user).first()
         if ngo is not None:
-            raise Exception('One User Cannot Have Multiple NGOs')      
-        ngo = NGO.objects.filter(ngo_name=self.ngo_name).first()    
+            raise Exception('One User Cannot Have Multiple NGOs') 
+        #Check if NGO with same name already exists     
+        ngo = NGO.objects.filter(ngo_name=self.ngo_name).first()   
         if ngo is not None:
             raise ValueError('NGO Already Exists With Same Name')
+        #Check for all required fields 
         if not self.ngo_name:
             raise ValueError('NGO Name Is Required')
         if not self.ngo_address:
@@ -99,12 +109,14 @@ class Donor(models.Model):
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
     def save(self, created_by=None, *args, **kwargs):
+        #Check if user already has a donor account
         donor = Donor.objects.filter(user=self.user).first()
         if donor is not None:
-            raise Exception('One User Cannot Have Multiple Donor Accounts')      
+            raise Exception('One User Cannot Have Multiple Donor Accounts')
+        #Check for all required fields      
         donor = Donor.objects.filter(donor_name=self.donor_name).first()    
         if donor is not None:
-            raise ValueError('NGO Already Exists With Same Name')
+            raise ValueError('NGO Already Exists With Same Name')        
         if not self.donor_name:
             raise ValueError('Donor Name Is Required')
         if not self.donor_cnic:
@@ -161,10 +173,12 @@ class Campaign(models.Model):
     void_reason = models.CharField(null=True, max_length=1024)
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
-    def save(self, created_by=None, *args, **kwargs):     
+    def save(self, created_by=None, *args, **kwargs): 
+        #Check if campaign with same name already exists under an NGO    
         campaigns = Campaign.objects.filter(campaign_name=self.campaign_name).first()    
         if campaigns is not None:
             raise ValueError('Campaign Already Exists With Same Name')
+        #Check for all required fields
         if not self.campaign_name:
             raise ValueError('Campaign Name Is Required')
         if not self.campaign_description:
@@ -226,10 +240,12 @@ class SponsorRequest(models.Model):
     void_reason = models.CharField(null=True, max_length=1024)
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
-    def save(self, created_by=None, *args, **kwargs):     
+    def save(self, created_by=None, *args, **kwargs):   
+        #Check if Sponsor Request with same name already exists under an NGO    
         sponsor_requests = SponsorRequest.objects.filter(request_name=self.request_name).first()    
         if sponsor_requests is not None:
             raise ValueError('Request Already Exists With Same Name')
+        #Check for all required fields
         if not self.request_name:
             raise ValueError('Request Name Is Required')
         if not self.request_description:
@@ -290,7 +306,8 @@ class Donation(models.Model):
     void_reason = models.CharField(null=True, max_length=1024)
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
-    def save(self, created_by=None, *args, **kwargs):                     
+    def save(self, created_by=None, *args, **kwargs):   
+        #Check for all required fields                  
         if not self.SponsorRequest:
             raise ValueError('Sponsor Request Is Required') 
         if not self.Donor:
