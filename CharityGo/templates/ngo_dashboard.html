@@ -32,6 +32,42 @@
 </div>
 
 
+<div style="margin-top: 80px;">
+
+
+    <h2 style="font-weight: bold;" class="text-center">SPONSOR REQUESTS</h2>
+<div class="text-center">
+    <a style="font-weight: bold;" class="text-center mt-3 btn btn-dark mb-4" href="{% url 'addsponsorrequest' ngouuid=ngo.uuid %}">Add Requests</a>
+</div>
+
+
+<div class="container">
+    <div class="row">
+    
+    {% for request in spnosorrequests %}
+
+      <div class="col-md-3 mt-4">
+        <div class="card h-100">
+            <img class="card-img-top fixed-image" src="{{request.request_image.url}}" alt="{{request.request_name}} Img">
+            <div class="card-body">
+                <h5 class="card-title">{{request.request_name}}</h5>                
+                <div class="flex">
+                    <a href="{% url 'editsponsorrequest' ngouuid=ngo.uuid requestuuid=request.uuid %}" class="btn btn-primary mt-2">Edit</a>
+                    <a href="{% url 'deletesponsorrequest' ngouuid=ngo.uuid requestuuid=request.uuid %}" class="btn btn-danger mt-2">Delete</a>
+                    <a href="{% url 'viewsponsorrequestreports' ngouuid=ngo.uuid requestuuid=request.uuid %}" class="btn btn-success mt-2">Reports</a>
+                </div>
+            </div>
+        </div>
+      </div>
+
+    {% endfor %}
+    </div>
+    </div>
+
+</div>
+
+
+
 
 
 {% include 'footer.html' %}

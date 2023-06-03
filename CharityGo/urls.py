@@ -18,5 +18,16 @@ urlpatterns = [
     path('CharityGo/ngo/<str:ngouuid>/campaign/delete/<str:campaignuuid>', views.view_delete_campaign, name='deletecampaign'),
     path('CharityGo/ngo/<str:ngouuid>/campaign/add', views.view_add_campaign, name='addcampaign'),
     path('CharityGo/ngo/<str:ngouuid>/campaign/add/save/', views.view_save_added_campaign, name='saveaddedcampaign'),
-    path('CharityGo/donor/dashboard/<str:uuid>', views.view_donor_dashboard, name='donordashboard')
+    path('CharityGo/ngo/<str:ngouuid>/sponsorrequest/edit/<str:requestuuid>', views.view_edit_sponsor_request, name='editsponsorrequest'),
+    path('CharityGo/ngo/<str:ngouuid>/sponsorrequest/edit/<str:requestuuid>/save/', views.view_save_edited_sponsor_request, name='saveeditedsponsorrequest'),
+    path('CharityGo/ngo/<str:ngouuid>/sponsorrequest/delete/<str:requestuuid>', views.view_delete_sponsor_request, name='deletesponsorrequest'),
+    path('CharityGo/ngo/<str:ngouuid>/sponsorrequest/add', views.view_add_sponsor_request, name='addsponsorrequest'),
+    path('CharityGo/ngo/<str:ngouuid>/sponsorrequest/add/save/', views.view_save_added_sponsor_request, name='saveaddedsponsorrequest'),
+    path('CharityGo/ngo/<str:ngouuid>/sponsorrequest/<str:requestuuid>/reports', views.view_sponsor_request_reports, name='viewsponsorrequestreports'),
+    path('CharityGo/donor/dashboard/<str:uuid>', views.view_donor_dashboard, name='donordashboard'),
+    path('CharityGo/donor/donate/ngo/<str:ngouuid>/sponsorrequest/<str:requestuuid>/save', views.view_donate_to_sponsor_request_save, name='donatetosponsorrequestsave'),
+    path('CharityGo/donor/mydonations', views.view_my_donations, name='mydonations'),
+    path('CharityGo/donor/generatepdf', views.generate_pdf, name='generatepdf'),
+    path('CharityGo/donor/logout', views.view_donor_logout, name='donorlogout'),
+
 ]

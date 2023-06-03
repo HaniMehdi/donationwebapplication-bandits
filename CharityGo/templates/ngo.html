@@ -37,6 +37,8 @@
 
   <div class="container mt-5 mb-5"> 
 
+    <h3 style="color: white;" class="text-center"> CAMPAIGNS </h3>
+
     <div class="row mt-2">
   
       {% for campaign in campaigns %}
@@ -47,6 +49,31 @@
           <div class="card-body">
             <h5 class="card-title">{{campaign.campaign_name}}</h5>
             <p class="card-text">{{campaign.campaign_description}}</p>
+          </div>
+        </div>
+      </div>
+    
+      {% endfor %}
+    
+    </div>
+  
+  </div>
+
+
+  <div class="container mb-5" style="margin-top: 80px;"> 
+
+    <h3 style="color: white;" class="text-center"> SPONSOR REQUESTS </h3>
+
+    <div class="row mt-2">
+  
+      {% for request in requests %}
+      
+      <div class="col-md-4 mt-4">
+        <div class="card h-100 mb-3" style="border-radius: 10px;">
+          <img src="{{request.request_image.url}}" alt="request" class="card-img-top card-image-fixed" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
+          <div class="card-body">
+            <h5 class="card-title">{{request.request_name}}</h5>
+            <p class="card-text">{{request.request_description}}</p>
           </div>
         </div>
       </div>
