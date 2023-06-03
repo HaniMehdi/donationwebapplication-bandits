@@ -25,12 +25,41 @@ class NGO(models.Model):
     void_reason = models.CharField(null=True, max_length=1024)
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
+    def save(self, created_by=None, *args, **kwargs):
+        ngo = NGO.objects.filter(user=self.user).first()
+        if ngo is not None:
+            raise Exception('One User Cannot Have Multiple NGOs')      
+        ngo = NGO.objects.filter(ngo_name=self.ngo_name).first()    
+        if ngo is not None:
+            raise ValueError('NGO Already Exists With Same Name')
+        if not self.ngo_name:
+            raise ValueError('NGO Name Is Required')
+        if not self.ngo_address:
+            raise ValueError('NGO Address Is Required')
+        if not self.ngo_description:
+            raise ValueError('NGO Description Is Required')
+        if not self.ngo_phone:
+            raise ValueError('NGO Phone No. Is Required')
+        if not self.ngo_bank_name:
+            raise ValueError('NGO Bank Name Is Required')
+        if not self.ngo_account_title:
+            raise ValueError('NGO Account Title Is Required')
+        if not self.ngo_account_no:
+            raise ValueError('NGO Account No. Is Required')
+        if not self.ngo_image:
+            raise ValueError('NGO Image Is Required')
+        self.date_created = timezone.now()
+        if not created_by:
+            created_by = User.objects.get(pk=1)
+        self.created_by = created_by
+        super().save()
+
     def update(self, updated_by=None, *args, **kwargs):
         self.date_updated = timezone.now()
         if (not updated_by):
             updated_by = User.objects.get(pk=1)
         self.updated_by = updated_by
-        self.save()
+        super().save()
     
     def delete(self, voided_by=None, *args, **kwargs):
         self.voided = True
@@ -40,7 +69,7 @@ class NGO(models.Model):
         if (not voided_by):
             voided_by = User.objects.get(pk=1)
         self.voided_by = voided_by
-        self.save()
+        super().save()
     
     def undelete(self, *args, **kwargs):
         if self.voided:
@@ -48,10 +77,10 @@ class NGO(models.Model):
             self.date_voided = None
             self.void_reason = None
             self.voided_by = None
-            self.save()
+            super().save()
     
     def purge(self, *args, **kwargs):
-        self.delete()
+        super().delete()
 
 
 class Donor(models.Model):
@@ -69,12 +98,29 @@ class Donor(models.Model):
     void_reason = models.CharField(null=True, max_length=1024)
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
+    def save(self, created_by=None, *args, **kwargs):
+        donor = Donor.objects.filter(user=self.user).first()
+        if donor is not None:
+            raise Exception('One User Cannot Have Multiple Donor Accounts')      
+        donor = Donor.objects.filter(donor_name=self.donor_name).first()    
+        if donor is not None:
+            raise ValueError('NGO Already Exists With Same Name')
+        if not self.donor_name:
+            raise ValueError('Donor Name Is Required')
+        if not self.donor_cnic:
+            raise ValueError('Donor CNIC Is Required')        
+        self.date_created = timezone.now()
+        if not created_by:
+            created_by = User.objects.get(pk=1)
+        self.created_by = created_by
+        super().save()
+
     def update(self, updated_by=None, *args, **kwargs):
         self.date_updated = timezone.now()
         if (not updated_by):
             updated_by = User.objects.get(pk=1)
         self.updated_by = updated_by
-        self.save()
+        super().save()
     
     def delete(self, voided_by=None, *args, **kwargs):
         self.voided = True
@@ -84,7 +130,7 @@ class Donor(models.Model):
         if (not voided_by):
             voided_by = User.objects.get(pk=1)
         self.voided_by = voided_by
-        self.save()
+        super().save()
     
     def undelete(self, *args, **kwargs):
         if self.voided:
@@ -92,10 +138,10 @@ class Donor(models.Model):
             self.date_voided = None
             self.void_reason = None
             self.voided_by = None
-            self.save()
+            super().save()
     
     def purge(self, *args, **kwargs):
-        self.delete()
+        super().delete()
 
 
 class Campaign(models.Model):
@@ -115,12 +161,30 @@ class Campaign(models.Model):
     void_reason = models.CharField(null=True, max_length=1024)
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
+    def save(self, created_by=None, *args, **kwargs):     
+        campaigns = Campaign.objects.filter(campaign_name=self.campaign_name).first()    
+        if campaigns is not None:
+            raise ValueError('Campaign Already Exists With Same Name')
+        if not self.campaign_name:
+            raise ValueError('Campaign Name Is Required')
+        if not self.campaign_description:
+            raise ValueError('Campaign Description Is Required') 
+        if not self.campaign_image:
+            raise ValueError('Campaign Image Is Required')
+        if not self.NGO:
+            raise ValueError('NGO Is Required')        
+        self.date_created = timezone.now()
+        if not created_by:
+            created_by = User.objects.get(pk=1)
+        self.created_by = created_by
+        super().save()
+
     def update(self, updated_by=None, *args, **kwargs):
         self.date_updated = timezone.now()
         if (not updated_by):
             updated_by = User.objects.get(pk=1)
         self.updated_by = updated_by
-        self.save()
+        super().save()
     
     def delete(self, voided_by=None, *args, **kwargs):
         self.voided = True
@@ -130,7 +194,7 @@ class Campaign(models.Model):
         if (not voided_by):
             voided_by = User.objects.get(pk=1)
         self.voided_by = voided_by
-        self.save()
+        super().save()
     
     def undelete(self, *args, **kwargs):
         if self.voided:
@@ -138,10 +202,10 @@ class Campaign(models.Model):
             self.date_voided = None
             self.void_reason = None
             self.voided_by = None
-            self.save()
+            super().save()
     
     def purge(self, *args, **kwargs):
-        self.delete()
+        super().delete()
 
 
 class SponsorRequest(models.Model):
@@ -162,12 +226,32 @@ class SponsorRequest(models.Model):
     void_reason = models.CharField(null=True, max_length=1024)
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
+    def save(self, created_by=None, *args, **kwargs):     
+        sponsor_requests = SponsorRequest.objects.filter(request_name=self.request_name).first()    
+        if sponsor_requests is not None:
+            raise ValueError('Request Already Exists With Same Name')
+        if not self.request_name:
+            raise ValueError('Request Name Is Required')
+        if not self.request_description:
+            raise ValueError('Request Description Is Required') 
+        if not self.request_image:
+            raise ValueError('Request Image Is Required')
+        if not self.request_price:
+            raise ValueError('Request Price Is Required')
+        if not self.NGO:
+            raise ValueError('NGO Is Required')            
+        self.date_created = timezone.now()
+        if not created_by:
+            created_by = User.objects.get(pk=1)
+        self.created_by = created_by
+        super().save()
+
     def update(self, updated_by=None, *args, **kwargs):
         self.date_updated = timezone.now()
         if (not updated_by):
             updated_by = User.objects.get(pk=1)
         self.updated_by = updated_by
-        self.save()
+        super().save()
     
     def delete(self, voided_by=None, *args, **kwargs):
         self.voided = True
@@ -177,7 +261,7 @@ class SponsorRequest(models.Model):
         if (not voided_by):
             voided_by = User.objects.get(pk=1)
         self.voided_by = voided_by
-        self.save()
+        super().save()
     
     def undelete(self, *args, **kwargs):
         if self.voided:
@@ -185,10 +269,10 @@ class SponsorRequest(models.Model):
             self.date_voided = None
             self.void_reason = None
             self.voided_by = None
-            self.save()
+            super().save()
     
     def purge(self, *args, **kwargs):
-        self.delete()
+        super().delete()
 
 
 class Donation(models.Model):
@@ -206,12 +290,23 @@ class Donation(models.Model):
     void_reason = models.CharField(null=True, max_length=1024)
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
+    def save(self, created_by=None, *args, **kwargs):                     
+        if not self.SponsorRequest:
+            raise ValueError('Sponsor Request Is Required') 
+        if not self.Donor:
+            raise ValueError('Donor Is Required')            
+        self.date_created = timezone.now()
+        if not created_by:
+            created_by = User.objects.get(pk=1)
+        self.created_by = created_by
+        super().save()
+
     def update(self, updated_by=None, *args, **kwargs):
         self.date_updated = timezone.now()
         if (not updated_by):
             updated_by = User.objects.get(pk=1)
         self.updated_by = updated_by
-        self.save()
+        super().save()
     
     def delete(self, voided_by=None, *args, **kwargs):
         self.voided = True
@@ -221,7 +316,7 @@ class Donation(models.Model):
         if (not voided_by):
             voided_by = User.objects.get(pk=1)
         self.voided_by = voided_by
-        self.save()
+        super().save()
     
     def undelete(self, *args, **kwargs):
         if self.voided:
@@ -229,10 +324,10 @@ class Donation(models.Model):
             self.date_voided = None
             self.void_reason = None
             self.voided_by = None
-            self.save()
+            super().save()
     
     def purge(self, *args, **kwargs):
-        self.delete()
+        super().delete()
 
 
 
