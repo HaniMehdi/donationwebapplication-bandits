@@ -1,7 +1,7 @@
 from typing import Optional
 from django.contrib import admin
 from django.http.request import HttpRequest
-from CharityGo.models import NGO, Campaign
+from CharityGo.models import NGO, Campaign, SponsorRequest
 
 from django.utils import timezone
 
@@ -33,6 +33,26 @@ class NGOAdmin(admin.ModelAdmin):
     #readonly_fields = ("created_by", "date_created",)
     # exclude = ("date_updated", "updated_by", "voided", "date_voided", "voided_by", "void_reason")
 
+    def has_delete_permission(self, request, obj=None):
+        return True
+    
+    def has_change_permission(self, request, obj=None):
+        return True
+    
+    def save_model(self, request, obj, form, change):
+        # Set the created_by field to the current user during record creation
+        if not change:
+            obj.created_by = request.user
+            obj.date_created = timezone.now()
+
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(SponsorRequest)
+class SponsorRequestAdmin(admin.ModelAdmin):
+
+    fields = ["request_name", "request_description", "request_image", "request_price", "NGO"]    
+   
     def has_delete_permission(self, request, obj=None):
         return True
     
