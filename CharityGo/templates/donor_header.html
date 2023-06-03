@@ -110,70 +110,29 @@
 
 <body class="flex-column min-vh-100">
 
-
     <div class="">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'home' %}">CharityGo</a>               
+                <p class="navbar-brand">Welcome, {{ngo.ngo_name}}</p>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Navigation Bar -->
+                <div class="navbar-collapse collapse"id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item"><a class="nav-link {% if navbar == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link {% if navbar == 'ngos' %}active{% endif %}" href="{% url 'viewngos' %}">NGOs</a></li>                        
+                        <li class="nav-item"><a class="nav-link {% if navbar == 'aboutus' %}active{% endif %}" href="{% url 'viewaboutus' %}">About Us</a></li>
+                    </ul>
+                   
+                    <ul class="navbar-nav ml-auto">
+                      <li class="nav-item"><a class="nav-link {% if navbar == 'login' %}active{% endif %}" href="{% url 'login' %}"> Logout <span>&#9094;</span> </a></li>
+                    </ul>
 
-
-      {% if is_user_logged_in == False %}
-    
-
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home' %}">CharityGo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Navigation Bar -->
-            <div class="navbar-collapse collapse"id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item"><a class="nav-link {% if navbar == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link {% if navbar == 'ngos' %}active{% endif %}" href="{% url 'viewngos' %}">NGOs</a></li>
-                    <li class="nav-item"><a class="nav-link {% if navbar == 'registerngo' %}active{% endif %}" href="{% url 'viewjoinus' %}">Register NGO</a></li>
-                    <li class="nav-item"><a class="nav-link {% if navbar == 'becomedonor' %}active{% endif %}" href="{% url 'registerdonor' %}">Become a Donor</a></li>
-                    <li class="nav-item"><a class="nav-link {% if navbar == 'aboutus' %}active{% endif %}" href="{% url 'viewaboutus' %}">About Us</a></li>
-                </ul>
-               
-                <ul class="navbar-nav ml-auto">
-                  <li class="nav-item"><a class="nav-link {% if navbar == 'login' %}active{% endif %}" href="{% url 'login' %}"> Login <span>&#9094;</span> </a></li>
-                </ul>
-
+                </div>
             </div>
-        </div>
-      </nav>
-
-
-      {% else %}
-
-
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home' %}">Welcome, {{donor.donor_name}}</a>                           
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Navigation Bar -->
-            <div class="navbar-collapse collapse"id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item"><a class="nav-link {% if navbar == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link {% if navbar == 'ngos' %}active{% endif %}" href="{% url 'viewngos' %}">NGOs</a></li>
-                    <li class="nav-item"><a class="nav-link {% if navbar == 'mydonations' %}active{% endif %}" href="{% url 'mydonations' %}">My Donations</a></li>                        
-                    <li class="nav-item"><a class="nav-link {% if navbar == 'aboutus' %}active{% endif %}" href="{% url 'viewaboutus' %}">About Us</a></li>
-                </ul>
-               
-                <ul class="navbar-nav ml-auto">
-                  <li class="nav-item"><a class="nav-link {% if navbar == 'login' %}active{% endif %}" href="{% url 'donorlogout' %}"> Logout <span>&#9094;</span> </a></li>
-                </ul>
-
-            </div>
-        </div>
-      </nav>
-
-
-      {% endif %}
-
-
-
-        
+        </nav>
 
 
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
