@@ -1,0 +1,74 @@
+<div class="container">
+
+    <div style="text-align: center;">
+
+        <h4 style="margin-top: 40px; ">CharityGo</h4>
+        <h6 style="margin-top: 5px; ">111-444-555</h6>
+        <h6 style="margin-top: 5px; ">www.charitygo.org.pk</h6>    
+        <h6 style="margin-top: 10px; ">Plot # 7, Block B SMCHS, Adjacent FTC Building, Shahrah-e-Faisal Rd, Block B Sindhi Muslim CHS (SMCHS), Karachi, Karachi City, Sindh</h6>
+    
+    </div>
+   
+
+    <h5 style="margin-top: 60px; ">Donor Information:</h5>
+
+    <div style=" display: grid; grid-template-columns: 1fr 1fr 1fr;">
+        <div style="padding: 10px; border: 1px solid #ccc;">          
+            <p style="margin-top: 5px; ">Name: {{donor.donor_name}}</p>                 
+        </div>
+        <div style="padding: 10px; border: 1px solid #ccc;">          
+            <p style="margin-top: 5px; ">CNIC: {{donor.donor_cnic}}</p>                   
+        </div>
+        <div style="padding: 10px; border: 1px solid #ccc;">          
+            <p style="margin-top: 5px; ">Email: {{donor.user.email}}</p>                   
+        </div>
+      </div>
+          
+    
+
+    <table class="table table-striped" style="margin-top: 50px; ">       
+        <thead>
+          <tr>
+            <div style="text-align: center;">
+
+                <th scope="col">No.</th>
+                <th scope="col">NGO</th>
+                <th scope="col">Cause</th>
+                <th scope="col">Date</th>
+                <th scope="col">Amount</th>
+
+            </div>
+          </tr>
+        </thead>
+        <tbody>
+            {% for donation in donations %}
+            <tr>
+                <th scope="row">{{donation.donation_id}}</th>
+                <td>{{donation.SponsorRequest.NGO.ngo_name}}</td>
+                <td>{{donation.SponsorRequest.request_name}}</td>                
+                <td>{{donation.date_created}}</td>
+                <td>Rs. {{donation.SponsorRequest.request_price}}</td>
+            </tr>    
+            {% endfor %}
+            <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>                
+                <td></td>
+                <td style="font-weight: bold;">Total: Rs. {{total_donation_amount}} </td>
+            </tr>                
+        </tbody>
+    </table>
+
+    <p style="margin-top: 50px; ">*This Is A Computer Generated File And Does Not Require Signature</p>
+    <p style="margin-top: 5px; ">File Generated On: {{date}}</p>
+
+
+    <div style="text-align: center; ">
+  
+        <h6 style="margin-top: 50px; ">&copy; 2023 Donation App. All rights reserved.</h6>
+    
+    </div>
+
+
+</div>
