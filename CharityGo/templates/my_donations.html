@@ -1,0 +1,48 @@
+{% include 'header.html' %}
+
+
+<div class="container">
+
+    <div class="alert alert-dark text-center" role="alert" style="margin-top: 50px; font-weight: bold; font-size: 20px;">
+        Total Donation Amount: Rs. {{total_donation_amount}}
+      </div>
+    
+    <table class="table table-striped" style="margin-top: 50px; ">
+        <caption>List Of Donations</caption>
+        <thead>
+          <tr>
+            <th scope="col">No.</th>
+            <th scope="col">NGO</th>
+            <th scope="col">Cause</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for donation in donations %}
+            <tr>
+                <th scope="row">{{donation.donation_id}}</th>
+                <td>{{donation.SponsorRequest.NGO.ngo_name}}</td>
+                <td>{{donation.SponsorRequest.request_name}}</td>
+                <td>Rs. {{donation.SponsorRequest.request_price}}</td>
+                <td>{{donation.date_created}}</td>
+            </tr>    
+            {% endfor %}              
+        </tbody>
+    </table>
+
+
+    <a style="margin-top: 30px; " class="btn btn-primary" href="{% url 'generatepdf' %}">Generate PDF</a>
+
+
+</div>
+
+
+<script>
+    {% if successmsg == True %}
+    alert('PDF Successfully Generated And Saved On Desktop')
+    {% endif %}
+</script>
+
+
+{% include 'footer.html' %}
